@@ -3,14 +3,13 @@
   "version": "1.0.0",
   "main": "index.html",
   "scripts": {
-    "build": "echo 'No build step needed'",
+    "build": "echo 'Static site'",
     "start": "echo 'Static site'"
   },
-  "author": "",
-  "license": "ISC",
-  "description": "Puzzle Generator Website",
-  "dependencies": {},
+  "dependencies": {
+    "netlify-cli": "latest"
+  },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=16.0.0"
   }
 }
