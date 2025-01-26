@@ -1,2 +1,10 @@
 [build]
-  publish = "."
+  base    = ""
+  publish = "build" # Path to the directory that contains your final build output
+  command = "npm run build" # Command to build your site
+
+[build.environment]
+  NODE_VERSION = "16" # Ensure the Node.js version matches what's specified in package.json
+
+[[plugins]]
+  package = "netlify-plugin-cache-nextjs"
