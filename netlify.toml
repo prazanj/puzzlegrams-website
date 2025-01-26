@@ -1,0 +1,6 @@
+[build]
+  publish = "."  # This should be "." if your build output is in the root directory
+  command = "npm run build"  # Ensure this matches your build script
+
+[build.environment]
+  NODE_VERSION = "16"  # Matches the Node.js version in your package.json

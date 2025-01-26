@@ -389,6 +389,7 @@ button:hover::before {
         <button id="savePuzzleButton">Save Puzzle</button>
         <div id="imagePreview"></div>
     </div>
+    <script src="bundle.js"></script>  <!-- Reference the bundled JS file -->
     <script>
         
         const imageUpload = document.getElementById('imageUpload');
@@ -584,8 +585,12 @@ startButton.addEventListener('click', () => {
 });
 
 // Save puzzle with user greetings and adjusted tile creation
+
+
+
 savePuzzleButton.addEventListener('click', () => savePuzzle(puzzleWidth, puzzleHeight));
-function savePuzzle(puzzleWidth, puzzleHeight) {
+
+async function savePuzzle(puzzleWidth, puzzleHeight) {
     const puzzleContainer = document.getElementById('puzzleContainer');
     if (!puzzleContainer) {
         alert('No puzzle to save!');
@@ -596,34 +601,34 @@ function savePuzzle(puzzleWidth, puzzleHeight) {
     tempCanvas.width = puzzleWidth;
     tempCanvas.height = puzzleHeight;
     const ctx = tempCanvas.getContext('2d');
-    
+
     const img = new Image();
     img.src = imageDataURL;
-    
-    img.onload = () => {
+
+    img.onload = async () => {
         ctx.drawImage(img, 0, 0, puzzleWidth, puzzleHeight);
-        
+
         const tileWidth = Math.floor(puzzleWidth / 3);
         const tileHeight = Math.floor(puzzleHeight / 3);
-        
+
         const puzzlePieces = Array.from(document.querySelectorAll('.puzzlePiece')).map((piece, index) => {
             const row = Math.floor(index / 3);
             const col = index % 3;
-            
+
             const tileCanvas = document.createElement('canvas');
             tileCanvas.width = tileWidth;
             tileCanvas.height = tileHeight;
             const tileCtx = tileCanvas.getContext('2d');
-            
-            tileCtx.drawImage(tempCanvas, 
-                col * tileWidth, row * tileHeight, 
+
+            tileCtx.drawImage(tempCanvas,
+                col * tileWidth, row * tileHeight,
                 tileWidth, tileHeight,
-                0, 0, 
+                0, 0,
                 tileWidth, tileHeight
             );
-            
+
             const tileDataURL = tileCanvas.toDataURL();
-            
+
             return `<div class="puzzlePiece" style="position: absolute; width: calc(100% / 3); height: calc(100% / 3); left: ${piece.style.left}; top: ${piece.style.top}; background-image: url('${tileDataURL}'); background-size: contain; background-repeat: no-repeat; background-position: center;"></div>`;
         }).join('');
 
@@ -787,30 +792,45 @@ function savePuzzle(puzzleWidth, puzzleHeight) {
 
             initializePuzzle();
         });
-          // Function to shuffle an array
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
     <\/script>
 </body>
 </html>`;
 
+        const token = 'nfp_RGpLFUtCWzKLa5iudx9LmAsNXiFG3zDw2785';
+        const siteId = '3cc04ce8-80ba-487b-a74c-4f19877149bf';
 
-      const blob = new Blob([htmlContent], { type: 'text/html' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'puzzle.html';
-        a.click();
-        URL.revokeObjectURL(url);
-        alert('Puzzle saved successfully!');
+        try {
+            const response = await fetch(`https://api.netlify.com/api/v1/sites/${siteId}/deploys`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    files: {
+                        'index.html': htmlContent
+                    }
+                })
+            });
+
+            if (response.ok) {
+                const deploymentResponse = await response.json();
+                console.log('Deployment Response:', deploymentResponse);
+                alert('Puzzle deployed successfully! Your site is live at: ' + deploymentResponse.deploy_url);
+            } else {
+                const errorResponse = await response.json();
+                console.error('Error Response:', errorResponse);
+                alert('Error deploying puzzle to Netlify: ' + errorResponse.message);
+            }
+        } catch (error) {
+            console.error('Request Error:', error.message);
+            alert('Failed to deploy to Netlify: ' + error.message);
+        }
     };
-    
 }
+ 
+
+
 </script>
 </body>
 </html>
