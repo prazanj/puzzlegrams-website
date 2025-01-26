@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "main": "index.html",
   "scripts": {
-    "build": "echo 'Static site'",
+    "build": "echo 'Static site deployment'",
     "start": "echo 'Static site'"
   },
   "dependencies": {
-    "netlify-cli": "latest"
+    "fetch-blob": "^3.2.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^16.10.0"
   },
   "engines": {
     "node": ">=16.0.0"
