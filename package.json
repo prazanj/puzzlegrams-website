@@ -1,11 +1,16 @@
 {
   "name": "puzzlegrams-website",
   "version": "1.0.0",
-  "main": "accesstoken.js",
+  "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "echo 'No build step needed'",
+    "start": "echo 'Static site'"
   },
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "Puzzle Generator Website",
+  "dependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
 }
