@@ -1,10 +1,10 @@
-[build]
-  publish = "dist"  # Ensure this is correctly set
-  command = "npm run build"
+const path = require('path');
 
-[build.environment]
-  NODE_VERSION = "16"
-  NETLIFY_BUILD_DEBUG = "true"  # Enable detailed build logging
-
-[[plugins]]
-  package = "netlify-plugin-cache-nextjs"
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+  },
+  mode: 'development',
+};
